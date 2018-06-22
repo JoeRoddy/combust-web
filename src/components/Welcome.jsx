@@ -180,7 +180,7 @@ export default class Welcome extends Component {
               </RenderDropdown>
             )}
         </ul>
-        <SocialContacts />
+        <SocialContacts history={this.props.history} />
         <div id="firebase-app" uk-modal="true">
           <div className="uk-modal-dialog uk-modal-body">
             <button

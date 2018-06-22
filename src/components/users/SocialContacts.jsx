@@ -51,7 +51,7 @@ export default class SocialContacts extends Component {
             </div>
           )}
         </div>
-        {componentsByMode[this.state.mode]}
+        {componentsByMode[this.state.mode](this.props.history)}
       </div>
     );
   }
