@@ -6,7 +6,7 @@ import welcomeStore from "../stores/WelcomeStore";
 import userStore from "../stores/UserStore";
 import { stores } from "../.combust/init";
 import SocialContacts from "./users/SocialContacts";
-const availApps = require("../.combust/availApps.json");
+import availApps from "../.combust/availApps.json";
 
 @observer
 export default class Welcome extends Component {

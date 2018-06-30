@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { firebaseConfig } from "../../.combust/config";
+import firebaseConfig from "../../.combust/firebase.config.json";
 import { uploadDocument } from "../../db/FileDb";
 
 export default class Form extends Component {
@@ -66,7 +66,9 @@ export default class Form extends Component {
       ? this.state[field]
       : defaultValues && defaultValues[field]
         ? defaultValues[field]
-        : defaultValues && defaultValues[cameled] ? defaultValues[cameled] : "";
+        : defaultValues && defaultValues[cameled]
+          ? defaultValues[cameled]
+          : "";
   };
 
   render() {
@@ -109,7 +111,9 @@ export default class Form extends Component {
                       type={
                         field === "password"
                           ? field
-                          : type === "string" ? "text" : "number"
+                          : type === "string"
+                            ? "text"
+                            : "number"
                       }
                       value={this.getInputValue(field)}
                     />

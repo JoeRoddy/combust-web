@@ -8,7 +8,7 @@ import Icons from "uikit/dist/js/uikit-icons";
 import firebase from "firebase/app";
 
 import registerServiceWorker from "./helpers/registerServiceWorker";
-import { firebaseConfig } from "./.combust/config";
+import firebaseConfig from "./.combust/firebase.config.json";
 import { initializeStores } from "./.combust/init";
 import App from "./components/App";
 

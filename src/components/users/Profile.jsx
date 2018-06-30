@@ -4,7 +4,7 @@ import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
 import Icon from "../reusable/Icon";
-import { firebaseConfig } from "../../.combust/config";
+import firebaseConfig from "../../.combust/firebase.config.json";
 import { uploadDocument } from "../../db/FileDb";
 import "./styles/Users.scss";
 
