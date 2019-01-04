@@ -12,7 +12,7 @@ const fields = {
 };
 
 @observer
-export default class Register extends Component {
+class Register extends Component {
   state = {
     errMessage: ""
   };
@@ -55,3 +55,5 @@ export default class Register extends Component {
     );
   }
 }
+
+export default Register;

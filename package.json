@@ -1,5 +1,5 @@
 {
-  "name": "lol",
+  "name": "combust-web",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -47,6 +47,8 @@
     "react-app-polyfill": "^0.2.0",
     "react-dev-utils": "^7.0.0",
     "react-dom": "^16.7.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
     "resolve": "1.8.1",
     "sass-loader": "7.1.0",
     "style-loader": "0.23.0",
@@ -57,6 +59,11 @@
     "webpack-dev-server": "3.1.9",
     "webpack-manifest-plugin": "2.0.4",
     "workbox-webpack-plugin": "3.6.3"
+  },
+  "devDependencies": {
+    "babel-plugin-transform-decorators-legacy": "^1.3.5",
+    "node-sass": "^4.11.0",
+    "sass-loader": "^6.0.6"
   },
   "scripts": {
     "start": "node scripts/start.js",
@@ -114,6 +121,14 @@
     ]
   },
   "babel": {
+    "plugins": [
+      [
+        "@babel/plugin-proposal-decorators",
+        {
+          "legacy": true
+        }
+      ]
+    ],
     "presets": [
       "react-app"
     ]

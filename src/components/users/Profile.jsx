@@ -9,7 +9,7 @@ import { uploadDocument } from "../../db/FileDb";
 import "./styles/Users.scss";
 
 @observer
-export default class Profile extends Component {
+class Profile extends Component {
   state = {};
 
   openConversationWithUser = userId => {
@@ -199,16 +199,15 @@ const ExamplePosts = ({ user }) => (
           <div className="uk-card-header">
             <div className="uk-grid-small uk-flex-middle" uk-grid="true">
               <div className="uk-width-auto">
-                {user &&
-                  user.iconUrl && (
-                    <img
-                      src={user.iconUrl}
-                      className="uk-border-circle"
-                      width="40"
-                      height="40"
-                      alt="User Avatar"
-                    />
-                  )}
+                {user && user.iconUrl && (
+                  <img
+                    src={user.iconUrl}
+                    className="uk-border-circle"
+                    width="40"
+                    height="40"
+                    alt="User Avatar"
+                  />
+                )}
               </div>
               <div className="uk-width-expand">
                 <h3 className="uk-card-title uk-margin-remove-bottom">Post</h3>
@@ -231,3 +230,5 @@ const ExamplePosts = ({ user }) => (
     })}
   </div>
 );
+
+export default Profile;

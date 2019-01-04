@@ -6,7 +6,7 @@ import Form from "../reusable/Form";
 import userStore from "../../stores/UserStore";
 
 @observer
-export default class Login extends Component {
+class Login extends Component {
   state = {
     errMessage: ""
   };
@@ -44,3 +44,5 @@ export default class Login extends Component {
     );
   }
 }
+
+export default Login;

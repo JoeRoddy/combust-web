@@ -6,7 +6,7 @@ import Avatar from "../reusable/Avatar";
 import "./styles/Users.scss";
 
 @observer
-export default class UserSearch extends Component {
+class UserSearch extends Component {
   state = {
     results: [],
     query: ""
@@ -70,3 +70,5 @@ export default class UserSearch extends Component {
     );
   }
 }
+
+export default UserSearch;

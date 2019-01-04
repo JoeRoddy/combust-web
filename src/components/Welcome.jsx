@@ -9,7 +9,7 @@ import SocialContacts from "./users/SocialContacts";
 import availApps from "../.combust/availApps.json";
 
 @observer
-export default class Welcome extends Component {
+class Welcome extends Component {
   state = {
     modalText: null
   };
@@ -120,65 +120,60 @@ export default class Welcome extends Component {
               <br /> Afterwards, refresh this page
             </RenderDropdown>
           )}
-          {firebaseConfigured &&
-            emailAuthEnabled && (
-              <RenderDropdown completed={user} title="Create a User">
-                <ToDoItem completed={user}>
-                  <Link
-                    to="/register"
-                    onClick={e => {
-                      if (user) {
-                        e.preventDefault();
-                        alert("You did that, silly");
-                      }
-                    }}
-                  >
-                    Create your first user account
-                  </Link>
-                </ToDoItem>
-              </RenderDropdown>
-            )}
-          {firebaseConfigured &&
-            emailAuthEnabled &&
-            user && (
-              <RenderDropdown
-                completed={stores.friendStore}
-                title="Install a Combust Module"
-              >
-                <p>
-                  Modules allow you to rapidly add functionality to your app.
-                  Try it out:
-                </p>
-                <ToDoItem completed={stores.friendStore}>
-                  Add <b>friends</b> from your terminal w/ the command:{" "}
-                  <code>combust install friends</code>
-                </ToDoItem>
-                <br />
-              </RenderDropdown>
-            )}
-          {firebaseConfigured &&
-            emailAuthEnabled &&
-            stores.friendStore && (
-              <RenderDropdown title="Go In.">
-                <p>
-                  <a
-                    href="https://joeroddy.github.io/combust/modules.html"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    You can browse popular combust modules here.
-                  </a>
-                </p>
-                <p>
-                  To create your own custom modules, you can use the{" "}
-                  <b>generate</b> command: <br />
-                  <code>
-                    combust generate blogs title:string body:text introImg:image
-                  </code>
-                </p>
-                <p>You're ready to start experimenting. Good luck!</p>
-              </RenderDropdown>
-            )}
+          {firebaseConfigured && emailAuthEnabled && (
+            <RenderDropdown completed={user} title="Create a User">
+              <ToDoItem completed={user}>
+                <Link
+                  to="/register"
+                  onClick={e => {
+                    if (user) {
+                      e.preventDefault();
+                      alert("You did that, silly");
+                    }
+                  }}
+                >
+                  Create your first user account
+                </Link>
+              </ToDoItem>
+            </RenderDropdown>
+          )}
+          {firebaseConfigured && emailAuthEnabled && user && (
+            <RenderDropdown
+              completed={stores.friendStore}
+              title="Install a Combust Module"
+            >
+              <p>
+                Modules allow you to rapidly add functionality to your app. Try
+                it out:
+              </p>
+              <ToDoItem completed={stores.friendStore}>
+                Add <b>friends</b> from your terminal w/ the command:{" "}
+                <code>combust install friends</code>
+              </ToDoItem>
+              <br />
+            </RenderDropdown>
+          )}
+          {firebaseConfigured && emailAuthEnabled && stores.friendStore && (
+            <RenderDropdown title="Go In.">
+              <p>
+                <a
+                  href="https://joeroddy.github.io/combust/modules.html"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  You can browse popular combust modules here.
+                </a>
+              </p>
+              <p>
+                To create your own custom modules, you can use the{" "}
+                <b>generate</b> command: <br />
+                <code>
+                  combust generate blogs title:string body:text introImg:image
+                </code>
+              </p>
+              <p>You're ready to start experimenting. Good luck!</p>
+            </RenderDropdown>
+          )}
         </ul>
         <SocialContacts history={this.props.history} />
         <div id="firebase-app" uk-modal="true">
@@ -197,6 +192,8 @@ export default class Welcome extends Component {
     );
   }
 }
+
+export default Welcome;
 
 const RenderDropdown = ({ completed, title, children }) => {
   return (

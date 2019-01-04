@@ -7,7 +7,7 @@ import "./styles/Users.scss";
 const componentsByMode = {};
 
 @observer
-export default class SocialContacts extends Component {
+class SocialContacts extends Component {
   state = {
     mode: Object.keys(componentsByMode)[0]
   };
@@ -56,3 +56,5 @@ export default class SocialContacts extends Component {
     );
   }
 }
+
+export default SocialContacts;
