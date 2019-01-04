@@ -222,9 +222,6 @@ const ExamplePosts = ({ user }) => (
               Run <code>combust install posts</code> to start creating posts!
             </p>
           </div>
-          <div className="uk-card-footer">
-            <a className="uk-button uk-button-text">Read more</a>
-          </div>
         </div>
       );
     })}

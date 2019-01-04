@@ -37,13 +37,7 @@ class SocialContacts extends Component {
                 {socialModes.map((mode, i) => {
                   return mode !== this.state.mode ? (
                     <li key={i}>
-                      <a
-                        onClick={e => {
-                          this.setMode(mode);
-                        }}
-                      >
-                        {mode}
-                      </a>
+                      <EmptyLink mode={mode} setMode={this.setMode} />
                     </li>
                   ) : null;
                 })}
@@ -56,5 +50,8 @@ class SocialContacts extends Component {
     );
   }
 }
+
+// eslint-disable-next-line
+const EmptyLink = ({ mode, setMode }) => <a onClick={setMode(mode)}>{mode}</a>;
 
 export default SocialContacts;
