@@ -1,0 +1,36 @@
+.Navbar {
+  z-index: 5;
+  .uk-logo {
+    height: 40px;
+  }
+  .uk-navbar-container {
+    height: 60px;
+  }
+}
+
+.display-none {
+  display: none;
+}
+
+.badge-danger {
+  background: #f0506e !important;
+}
+
+.onClickOutside {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
+
+.Navbar {
+  .uk-navbar-right {
+    padding-right: 15px;
+    //prevents scrollbar from shifting contents
+  }
+}
+
+.uk-text-white {
+  color: white;
+}
