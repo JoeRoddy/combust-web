@@ -1,0 +1,12 @@
+{
+  "database": {
+    "rules": "./src/.combust/database.rules.json"
+  },
+  "hosting": {
+    "public": "build",
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+  },
+  "storage": {
+    "rules": "./src/.combust/storage.rules"
+  }
+}
