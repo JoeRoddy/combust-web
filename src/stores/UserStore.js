@@ -1,12 +1,12 @@
-import { observable, computed } from "mobx";
+import { decorate, observable, computed } from "mobx";
+
 import userDb from "../db/UserDb";
 
 class UserStore {
-  @observable userId = null;
-  @observable usersMap = new Map();
-
-  @observable privateInfo = null; //only reads/writes by user
-  @observable serverInfo = null; //only user reads, only server writes
+  userId = null;
+  usersMap = new Map(); // map of publicInfo for each user
+  privateInfo = null; //only reads/writes by user
+  serverInfo = null; //only user reads, only server writes
 
   init() {
     _listenToCurrentUser();
@@ -28,12 +28,10 @@ class UserStore {
     _onLogoutTriggers.push(callback);
   }
 
-  @computed
   get user() {
     return this.usersMap.get(this.userId);
   }
 
-  @computed
   get fullUser() {
     return {
       id: this.userId,
@@ -81,7 +79,7 @@ class UserStore {
    * @param {Object} user
    * @param {string} user.email
    * @param {string} user.password
-   * @param {*} callback
+   * @param {function} callback
    */
   createUser(user, callback) {
     if (!user || !user.email || !user.password) {
@@ -125,6 +123,15 @@ class UserStore {
     return userDb.sendPasswordResetEmail(email);
   }
 }
+
+decorate(UserStore, {
+  userId: observable,
+  usersMap: observable,
+  privateInfo: observable,
+  serverInfo: observable,
+  user: computed,
+  fullUser: computed
+});
 
 const userStore = new UserStore();
 export default userStore;
@@ -184,9 +191,7 @@ const _handleUserLogout = function() {
 const _handleUserEstablished = function(user) {
   //module hooks
   try {
-    _onLoginTriggers.forEach(event => {
-      event(user);
-    });
+    _onLoginTriggers.forEach(event => event(user));
   } catch (err) {
     console.log(err);
   }

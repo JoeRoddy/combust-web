@@ -1,6 +1,6 @@
-import firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
+import firebase from "@firebase/app";
+import "@firebase/database";
+import "@firebase/auth";
 
 import userStore from "../stores/UserStore";
 
@@ -108,8 +108,7 @@ class UserDb {
       res => {
         callback(null, res);
         const { uid } = res.user;
-        db
-          .ref("users/publicInfo")
+        db.ref("users/publicInfo")
           .child(uid)
           .update({
             isOnline: true

@@ -1,7 +1,7 @@
 import { observable } from "mobx";
-import firebase from "firebase/app";
-import "firebase/database";
-import "firebase/auth";
+import firebase from "@firebase/app";
+import "@firebase/database";
+import "@firebase/auth";
 
 class WelcomeStore {
   @observable firebaseConfigured = false;
