@@ -51,7 +51,9 @@ class SocialContacts extends Component {
   }
 }
 
-// eslint-disable-next-line
-const EmptyLink = ({ mode, setMode }) => <a onClick={setMode(mode)}>{mode}</a>;
+const EmptyLink = ({ mode, setMode }) => (
+  // eslint-disable-next-line
+  <a onClick={() => setMode(mode)}>{mode}</a>
+);
 
 export default SocialContacts;
