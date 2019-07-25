@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
-import userStore from "../../stores/UserStore";
-import Form from "../reusable/Form";
+import userStore from "../../../stores/UserStore";
+import Form from "../../reusable/Form";
 
 const fields = {
   //legal data types: string, text, number, boolean, image
