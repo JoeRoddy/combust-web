@@ -38,31 +38,20 @@ class UserDb {
    * @param {*} userDataByPrivacy
    */
   saveToUsersCollection(uid, userDataByPrivacy) {
-    if (!uid) {
+    if (!uid || !userDataByPrivacy) {
       return;
     }
-
-    let firebaseUpdatePromise = null;
-    ["publicInfo", "privateInfo", "serverInfo"].forEach(privacy => {
-      const data = userDataByPrivacy[privacy];
-      if (data) {
-        let prom = firebase
-          .database()
-          .ref("/users/" + privacy)
-          .child(uid)
-          .update(data);
-        firebaseUpdatePromise =
-          privacy === "publicInfo" ? prom : firebaseUpdatePromise;
-      }
-    });
-    return firebaseUpdatePromise;
+    return firebase
+      .database()
+      .ref(`/users/${uid}`)
+      .update(userDataByPrivacy);
   }
 
   listenToCurrentUser(callback) {
     const db = firebase.database();
     firebase.auth().onAuthStateChanged(userAuth => {
       if (userAuth) {
-        const userRef = db.ref("users/publicInfo/" + userAuth.uid);
+        const userRef = db.ref(`users/${userAuth.uid}/publicInfo`);
         userRef.once("value").then(snap => {
           const userData = snap.val();
           // social login users will have {online:true, lastOnline:123} on initial creation
@@ -94,7 +83,7 @@ class UserDb {
   listenToUser(userId, callback) {
     firebase
       .database()
-      .ref("users/publicInfo/" + userId)
+      .ref(`users/${userId}/publicInfo`)
       .on("value", snapshot => {
         const friend = snapshot.val();
         if (!friend) {
@@ -112,8 +101,8 @@ class UserDb {
       res => {
         callback(null, res);
         const { uid } = res.user;
-        db.ref("users/publicInfo")
-          .child(uid)
+        db.ref("users/" + uid)
+          .child("publicInfo")
           .update({
             isOnline: true
           });
@@ -137,8 +126,8 @@ class UserDb {
     auth.signOut();
     firebase
       .database()
-      .ref("users/publicInfo")
-      .child(user.id)
+      .ref("users/" + user.id)
+      .child("publicInfo")
       .update({ isOnline: false, lastOnline: new Date().getTime() });
   }
 
@@ -152,18 +141,18 @@ class UserDb {
 
   usersLoaded = false;
   loadUserData = () => {
-    this.usersLoaded = true;
-    firebase
-      .database()
-      .ref("users/publicInfo")
-      .once("value")
-      .then(snap => {
-        let userData = snap.val();
-        userData &&
-          Object.keys(userData).forEach(uid => {
-            userStore.getUserById(uid);
-          });
-      });
+    // this.usersLoaded = true;
+    // firebase
+    //   .database()
+    //   .ref("users/publicInfo")
+    //   .once("value")
+    //   .then(snap => {
+    //     let userData = snap.val();
+    //     userData &&
+    //       Object.keys(userData).forEach(uid => {
+    //         userStore.getUserById(uid);
+    //       });
+    //   });
   };
 
   searchByField(query, field) {
@@ -200,8 +189,8 @@ const _applyListenersForCurrentUser = function(uid, callback) {
     firebase
       .database()
       .ref("users")
-      .child(privacy)
       .child(uid)
+      .child(privacy)
       .on("value", snap => {
         let userData = snap.val();
         if (!userData) {
@@ -259,7 +248,7 @@ const _monitorOnlineStatus = function() {
   }
   const uid = currentUser.uid;
   const amOnline = firebase.database().ref("/.info/connected");
-  const userRef = firebase.database().ref("/users/publicInfo/" + uid);
+  const userRef = firebase.database().ref(`/users/${uid}/publicInfo`);
   amOnline.on("value", snapshot => {
     if (snapshot.val()) {
       userRef.onDisconnect().update({

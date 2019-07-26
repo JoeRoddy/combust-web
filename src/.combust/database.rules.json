@@ -3,23 +3,18 @@
     ".read": false,
     ".write": false,
     "users": {
-      "publicInfo": {
-        ".read": true,
-        ".indexOn": "email",
-        "$uid": {
+      ".indexOn": ["publicInfo/email"],
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        "publicInfo": {
+          ".read": true,
           ".write": "$uid === auth.uid"
-        }
-      },
-      "privateInfo": {
-        "$uid": {
-          ".read": "$uid === auth.uid",
+        },
+        "privateInfo": {
           ".write": "$uid === auth.uid"
-        }
-      },
-      "serverInfo": {
-        "$uid": {
-          ".read": "$uid === auth.uid",
-          ".write": "!data.exists()",
+        },
+        "serverInfo": {
+          ".write": "$uid === auth.uid && !data.exists()",
           "isAdmin": {
             ".validate": "newData.val()===false"
           },
