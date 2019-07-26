@@ -48,7 +48,8 @@ export default class Form extends Component {
                   }/storage/files`}
                 >
                   Enable storage
-                </a>, then execute:{" "}
+                </a>
+                , then execute:{" "}
                 <code>combust configure {firebaseConfig.projectId}</code>
               </span>
             )
@@ -65,10 +66,10 @@ export default class Form extends Component {
     return this.state[field] != null
       ? this.state[field]
       : defaultValues && defaultValues[field]
-        ? defaultValues[field]
-        : defaultValues && defaultValues[cameled]
-          ? defaultValues[cameled]
-          : "";
+      ? defaultValues[field]
+      : defaultValues && defaultValues[cameled]
+      ? defaultValues[cameled]
+      : "";
   };
 
   render() {
@@ -82,13 +83,19 @@ export default class Form extends Component {
     } = this.props;
 
     return (
-      <form onSubmit={this.submitForm} className="Form uk-width-medium">
-        <legend className="uk-legend">{title}</legend>
+      <form
+        onSubmit={this.submitForm}
+        className="Form uk-width-medium uk-flex uk-flex-column uk-flex-middle"
+      >
+        <legend className="uk-legend uk-text-center">{title}</legend>
         {fields &&
           Object.keys(fields).map(field => {
             const type = fields[field];
             return (
-              <div className="uk-margin" key={field}>
+              <div
+                className="uk-flex uk-flex-column uk-margin-small"
+                key={field}
+              >
                 <label className="uk-form-label" htmlFor="form-stacked-text">
                   {field}
                 </label>
@@ -112,8 +119,8 @@ export default class Form extends Component {
                         field === "password"
                           ? field
                           : type === "string"
-                            ? "text"
-                            : "number"
+                          ? "text"
+                          : "number"
                       }
                       value={this.getInputValue(field)}
                     />
@@ -187,7 +194,7 @@ export default class Form extends Component {
             );
           })}
         <button
-          className="uk-button uk-button-default uk-form-width-medium uk-margin-small-bottom"
+          className="uk-button uk-button-default uk-form-width-medium uk-margin-small"
           onClick={this.submitForm}
         >
           {submitText || "submit"}
