@@ -66,18 +66,20 @@ class UserDb {
         const userRef = db.ref("users/publicInfo/" + userAuth.uid);
         userRef.once("value").then(snap => {
           const userData = snap.val();
-          // social login users will have {online:true, lastOnline:123}
-          // on initial creation
-          const keyCount = userData && Object.keys(userData).length;
-          if (userData && keyCount > 2) {
-            userRef.update({ lastOnline: new Date().getTime() });
+          // social login users will have {online:true, lastOnline:123} on initial creation
+          const userHasData = userData && Object.keys(userData).length > 2;
+          if (userHasData) {
+            userRef.update({
+              lastOnline: new Date().getTime(),
+              isOnline: true
+            });
             _applyListenersForCurrentUser(userAuth.uid, (err, data) => {
               if (err) return callback(err);
               data.id = userAuth.uid;
               callback(null, data);
             });
           } else if (
-            (keyCount <= 2 || !snap.exists()) &&
+            (!userHasData || !snap.exists()) &&
             userAuth.providerData &&
             userAuth.providerData[0].providerId !== "password"
           ) {
