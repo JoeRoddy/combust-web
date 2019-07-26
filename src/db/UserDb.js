@@ -17,11 +17,10 @@ class UserDb {
       .then(res => {
         delete user.password;
         const userDataByPrivacy = {
-          publicInfo: Object.assign(_getPublicUserObject(user.email), user),
+          publicInfo: _getPublicUserObject(user),
           privateInfo: _getPrivateUserObject(),
           serverInfo: _getServerUserObject()
         };
-
         this.saveToUsersCollection(res.user.uid, userDataByPrivacy);
         userDataByPrivacy.id = res.user.uid;
         return callback(null, userDataByPrivacy);
@@ -220,35 +219,37 @@ const _applyListenersForCurrentUser = function(uid, callback) {
   _monitorOnlineStatus();
 };
 
-const _getPublicUserObject = function(email) {
+const _getPublicUserObject = function(values = {}) {
+  //globally readable, user-writeable
   const timeNow = new Date().getTime();
-  return {
-    //globally readable, user-writeable
-    email: email,
+  const defaultValues = {
     createdAt: timeNow,
     lastOnline: timeNow,
     isOnline: true,
     iconUrl: _getRandomProfilePic()
   };
+  return Object.assign(defaultValues, values);
 };
 
-const _getPrivateUserObject = function() {
-  return {
-    //user-only-readable, user-writeable
+const _getPrivateUserObject = function(values = {}) {
+  //user-only-readable, user-writeable
+  const defaultValues = {
     conversations: {},
     friends: {},
     notificationToken: null,
     notificationsEnabled: true
   };
+  return Object.assign(defaultValues, values);
 };
 
-const _getServerUserObject = function() {
-  return {
-    //user-only-readable, server-only writeable
-    //new fields should be validated in database.rules.json
+const _getServerUserObject = function(values = {}) {
+  //user-only-readable, server-only writeable
+  //new fields should be validated in database.rules.json
+  const defaultValues = {
     walletBalance: 0,
     isAdmin: false
   };
+  return Object.assign(defaultValues, values);
 };
 
 const _monitorOnlineStatus = function() {
@@ -279,17 +280,18 @@ const _createUserFromThirdPartyAuth = function(authInfo, callback) {
     firstName,
     lastName,
     email: mainProviderInfo.email,
-    phoneNumber: mainProviderInfo.phoneNumber,
     iconUrl: mainProviderInfo.photoURL,
-    providerId: mainProviderInfo.providerId,
-    providerUid: mainProviderInfo.uid,
     createdAt: timeNow,
     lastOnline: timeNow,
     isOnline: true
   };
   const userDataByPrivacy = {
     publicInfo,
-    privateInfo: _getPrivateUserObject(),
+    privateInfo: _getPrivateUserObject({
+      providerId: mainProviderInfo.providerId,
+      providerUid: mainProviderInfo.uid,
+      phoneNumber: mainProviderInfo.phoneNumber
+    }),
     serverInfo: _getServerUserObject()
   };
 
