@@ -66,7 +66,10 @@ class UserDb {
         const userRef = db.ref("users/publicInfo/" + userAuth.uid);
         userRef.once("value").then(snap => {
           const userData = snap.val();
-          if (userData) {
+          // social login users will have {online:true, lastOnline:123}
+          // on initial creation
+          const keyCount = userData && Object.keys(userData).length;
+          if (userData && keyCount > 2) {
             userRef.update({ lastOnline: new Date().getTime() });
             _applyListenersForCurrentUser(userAuth.uid, (err, data) => {
               if (err) return callback(err);
@@ -74,7 +77,7 @@ class UserDb {
               callback(null, data);
             });
           } else if (
-            !snap.exists() &&
+            (keyCount <= 2 || !snap.exists()) &&
             userAuth.providerData &&
             userAuth.providerData[0].providerId !== "password"
           ) {
@@ -253,20 +256,13 @@ const _monitorOnlineStatus = function() {
   }
   const uid = currentUser.uid;
   const amOnline = firebase.database().ref("/.info/connected");
-  const userRef = firebase
+  const isOnlineRef = firebase
     .database()
     .ref("/users/publicInfo/" + uid + "/isOnline");
   amOnline.on("value", snapshot => {
     if (snapshot.val()) {
-      userRef.onDisconnect().set(false);
+      isOnlineRef.onDisconnect().set(false);
     }
-  });
-  userRef.on("value", snapshot => {
-    window.setTimeout(() => {
-      if (firebase.auth().currentUser) {
-        userRef.set(true);
-      }
-    }, 2000);
   });
 };
 
