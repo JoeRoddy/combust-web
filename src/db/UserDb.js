@@ -140,7 +140,7 @@ class UserDb {
       .database()
       .ref("users/publicInfo")
       .child(user.id)
-      .update({ isOnline: false });
+      .update({ isOnline: false, lastOnline: new Date().getTime() });
   }
 
   /**
@@ -258,12 +258,13 @@ const _monitorOnlineStatus = function() {
   }
   const uid = currentUser.uid;
   const amOnline = firebase.database().ref("/.info/connected");
-  const isOnlineRef = firebase
-    .database()
-    .ref("/users/publicInfo/" + uid + "/isOnline");
+  const userRef = firebase.database().ref("/users/publicInfo/" + uid);
   amOnline.on("value", snapshot => {
     if (snapshot.val()) {
-      isOnlineRef.onDisconnect().set(false);
+      userRef.onDisconnect().update({
+        isOnline: false,
+        lastOnline: new Date().getTime()
+      });
     }
   });
 };
