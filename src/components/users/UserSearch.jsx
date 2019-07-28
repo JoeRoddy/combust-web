@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 
-import userDb from "../../db/UserDb";
+import userStore from "../../stores/UserStore";
 import Avatar from "../reusable/Avatar";
 import "./styles/Users.scss";
 
@@ -9,14 +9,41 @@ import "./styles/Users.scss";
 class UserSearch extends Component {
   state = {
     results: [],
-    query: ""
+    query: "",
+    isLoading: false,
+    modalText: null
   };
 
-  // You must implement a custom search solution to scale
-  handleSearch = e => {
-    let query = e.target.value;
-    let results = userDb.searchByField(query, "displayName");
-    this.setState({ results, query });
+  _searchTimeout;
+
+  // searches for users after typing has halted for .3 seconds
+  handleSearchKeyUp = () => {
+    const { query } = this.state;
+    clearTimeout(this._searchTimeout);
+    if (query !== "") {
+      this.setState({ isLoading: true });
+      this._searchTimeout = setTimeout(() => this.searchForUsers(query), 300);
+    } else {
+      this.setState({ results: [], isLoading: false });
+    }
+  };
+
+  searchForUsers = async query => {
+    return prompt(
+      "Deploy your search cloud function first!\nIn the console, execute:",
+      "firebase deploy --only functions"
+    );
+    try {
+      const results = await userStore.searchByField(query, "email");
+      this.setState({ results, isLoading: false });
+    } catch (error) {
+      if (error.message.includes("Failed to fetch")) {
+        prompt(
+          "Deploy your Firebase cloud function first!\nIn the console, execute:",
+          "firebase deploy --only functions"
+        );
+      }
+    }
   };
 
   openProfile = user => {
@@ -25,6 +52,8 @@ class UserSearch extends Component {
   };
 
   render() {
+    const { isLoading, query, results } = this.state;
+
     return (
       <div className="UserSearch">
         <form className="uk-search uk-search-default">
@@ -32,38 +61,26 @@ class UserSearch extends Component {
           <input
             className="uk-search-input"
             type="search"
-            value={this.state.query}
+            value={query}
             placeholder="Search for users.."
-            onChange={this.handleSearch}
+            onChange={e => this.setState({ query: e.target.value })}
+            onKeyUp={this.handleSearchKeyUp}
             results={5}
           />
+          {isLoading && (
+            <div
+              className="uk-form-icon uk-form-icon-flip"
+              uk-spinner="ratio:.5"
+            />
+          )}
         </form>
-        {this.state.results.length > 0 && (
-          <div className="uk-card uk-card-default uk-card-body searchResults">
-            {this.state.results.map((user, i) => {
-              debugger;
-              return (
-                <div key={i}>
-                  <div
-                    onClick={e => {
-                      this.openProfile(user);
-                    }}
-                    className="userSearch-result uk-flex uk-flex-middle uk-text-truncate"
-                  >
-                    <Avatar src={user.iconUrl} height={30} />
-                    {user.displayName}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+        {results.length > 0 && (
+          <UserSearchResults results={results} openProfile={this.openProfile} />
         )}
-        {this.state.query !== "" && (
+        {query !== "" && (
           <span
             className="onClickOutside"
-            onClick={e => {
-              this.setState({ results: [], query: "" });
-            }}
+            onClick={() => this.setState({ results: [], query: "" })}
           />
         )}
       </div>
@@ -72,3 +89,21 @@ class UserSearch extends Component {
 }
 
 export default UserSearch;
+
+const UserSearchResults = ({ results, openProfile }) => (
+  <div className="uk-card uk-card-default uk-card-body searchResults">
+    {results.map((user, i) => {
+      return (
+        <div key={i}>
+          <div
+            onClick={() => openProfile(user)}
+            className="userSearch-result uk-flex uk-flex-middle uk-text-truncate"
+          >
+            <Avatar src={user.iconUrl} height={30} />
+            {user.displayName}
+          </div>
+        </div>
+      );
+    })}
+  </div>
+);

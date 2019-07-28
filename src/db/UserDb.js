@@ -2,8 +2,6 @@ import firebase from "@firebase/app";
 import "@firebase/database";
 import "@firebase/auth";
 
-import userStore from "../stores/UserStore";
-
 class UserDb {
   createUser(user, callback) {
     if (!user || !user.email || !user.password) {
@@ -139,37 +137,17 @@ class UserDb {
     return firebase.auth().currentUser.getToken(/* forceRefresh */ true);
   }
 
-  usersLoaded = false;
-  loadUserData = () => {
-    // this.usersLoaded = true;
-    // firebase
-    //   .database()
-    //   .ref("users/publicInfo")
-    //   .once("value")
-    //   .then(snap => {
-    //     let userData = snap.val();
-    //     userData &&
-    //       Object.keys(userData).forEach(uid => {
-    //         userStore.getUserById(uid);
-    //       });
-    //   });
-  };
-
+  /**
+   * hits the userSearch api
+   * @param {string} query
+   * @param {string} field
+   * @returns {Promise} user search result (as an object)
+   */
   searchByField(query, field) {
-    if (!this.usersLoaded) {
-      this.loadUserData();
-    }
-    if (!query) {
-      return [];
-    }
-    const users = userStore.usersMap.values();
-    let i = Array.from(users).filter(user => {
-      return (
-        user.id !== userStore.userId &&
-        (user[field] && user[field].toUpperCase().includes(query.toUpperCase()))
-      );
-    });
-    return i;
+    const rootUrl = _getApiUrl(firebase.app().options.projectId);
+    return fetch(`${rootUrl}/userSearch?query=${query}&field=${field}`).then(
+      resp => resp.json()
+    );
   }
 
   sendPasswordResetEmail(email) {
@@ -309,3 +287,5 @@ const _getRandomProfilePic = function() {
 
   return profilePics[Math.floor(Math.random() * profilePics.length)];
 };
+
+const _getApiUrl = projId => `https://us-central1-${projId}.cloudfunctions.net`;

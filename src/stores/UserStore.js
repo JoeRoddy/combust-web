@@ -43,6 +43,7 @@ class UserStore {
 
   /**
    * returns the public user info from a given user id
+   * & applies a listener to their data
    * @param {string} userId
    */
   getUserById(userId) {
@@ -97,22 +98,23 @@ class UserStore {
   }
 
   /**
-   * find a user already stored in memory by a specific field
-   * @param {string} field
+   * find a user by a publicInfo field
    * @param {string} query
+   * @param {string} field
    */
-  searchFromLocalUsersByField(field, query) {
-    let results = [];
-    this.usersMap.entries().forEach(([uid, user]) => {
-      if (
-        user &&
-        typeof user[field] === "string" &&
-        user[field].toUpperCase().includes(query.toUpperCase())
-      ) {
-        results.push(user);
+  async searchByField(query, field) {
+    let results = await userDb.searchByField(query, field);
+    debugger;
+    results = results || {};
+    let formattedResults = [];
+    Object.keys(results).forEach(uid => {
+      if (uid !== this.userId) {
+        this.getUserById(uid); // apply a listener
+        const formattedUser = _savePublicUserInfo(uid, results[uid]);
+        formattedResults.push(formattedUser);
       }
     });
-    return results;
+    return formattedResults;
   }
 
   /**
@@ -144,8 +146,7 @@ let _onLogoutTriggers = [];
 const _listenToCurrentUser = function() {
   userDb.listenToCurrentUser((err, userData) => {
     if (err) {
-      debugger;
-      return;
+      return console.log(err);
     } else if (!userData) {
       //user logged out
       if (userStore.userId) {
@@ -227,4 +228,5 @@ const _savePublicUserInfo = function(userId, user) {
   user.save = _updateUser;
   user.id = userId;
   userStore.usersMap.set(userId, user);
+  return user;
 };
