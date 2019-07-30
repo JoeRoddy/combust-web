@@ -29,18 +29,14 @@ class UserSearch extends Component {
   };
 
   searchForUsers = async query => {
-    return prompt(
-      "Deploy your search cloud function first!\nIn the console, execute:",
-      "firebase deploy --only functions"
-    );
     try {
       const results = await userStore.searchByField(query, "email");
       this.setState({ results, isLoading: false });
     } catch (error) {
       if (error.message.includes("Failed to fetch")) {
-        prompt(
-          "Deploy your Firebase cloud function first!\nIn the console, execute:",
-          "firebase deploy --only functions"
+        return prompt(
+          "Install the user search feature first!\nIn the console, execute:",
+          "combust install user-search"
         );
       }
     }
