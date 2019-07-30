@@ -38,7 +38,6 @@ class Register extends Component {
 
     return (
       <div className="Register uk-flex uk-flex-center uk-margin">
-        {user && <div>You already have an account.</div>}
         <Form
           onSubmit={this.handleSubmit}
           submitText="Sign Up"
@@ -49,6 +48,7 @@ class Register extends Component {
           <Link to="/login">Login instead</Link>
           <div className="uk-text-danger uk-text-break uk-margin-small-top">
             {this.state.errMessage}
+            {user && <div>You already have an account.</div>}
           </div>
         </Form>
       </div>

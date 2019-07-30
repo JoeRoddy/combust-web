@@ -11,35 +11,38 @@ class Login extends Component {
     errMessage: ""
   };
 
-  componentWillUpdate(nextProps) {
+  componentWillUpdate() {
     if (userStore.user) {
       this.props.history.push("/");
     }
   }
 
-  handleLogin = formData => {
-    userStore.login(formData, (err, userData) => {
-      err
-        ? this.setState({ errMessage: err.message })
-        : this.props.history.push("/");
-    });
+  loginWithEmail = formData => {
+    userStore.login(formData, this.onLogin);
+  };
+
+  onLogin = (err, userData) => {
+    err
+      ? this.setState({ errMessage: err.message })
+      : this.props.history.push("/");
   };
 
   render() {
     return (
-      <div className="Register uk-flex uk-flex-center uk-margin">
+      <div className="Register uk-flex uk-flex-column uk-flex-middle uk-margin">
         <Form
-          onSubmit={this.handleLogin}
+          onSubmit={this.loginWithEmail}
           fields={{ email: "string", password: "string" }}
           title="Login"
           submitText="Login"
         >
-          <br />
-          <Link to="/register">Create an account</Link>
           <div className="uk-text-danger uk-text-break uk-margin-small-top">
             {this.state.errMessage}
           </div>
         </Form>
+        <Link to="/register" className="uk-margin">
+          Create an account
+        </Link>
       </div>
     );
   }
