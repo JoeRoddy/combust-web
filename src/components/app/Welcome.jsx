@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
-import welcomeStore from "../../stores/WelcomeStore";
-import userStore from "../../stores/UserStore";
+import welcomeStore from "../../stores/welcomeStore";
+import userStore from "../../stores/userStore";
 import { stores } from "../../.combust/init";
 import SocialContacts from "../users/SocialContacts";
 import availApps from "../../.combust/availApps.json";

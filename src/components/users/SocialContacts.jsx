@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 
-import userStore from "../../stores/UserStore";
+import userStore from "../../stores/userStore";
 import "./styles/Users.scss";
 
 const componentsByMode = {};

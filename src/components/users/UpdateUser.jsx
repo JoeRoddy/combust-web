@@ -2,7 +2,7 @@ import React from "react";
 import { observer } from "mobx-react";
 
 import Form from "../reusable/Form";
-import userStore from "../../stores/UserStore";
+import userStore from "../../stores/userStore";
 
 const fields = {
   iconUrl: "image"

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import * as iconURI from "../../assets/images/logo.png";
 import UserSearch from "../users/UserSearch";
-import userStore from "../../stores/UserStore";
+import userStore from "../../stores/userStore";
 
 const Navbar = observer(({ history }) => (
   <div

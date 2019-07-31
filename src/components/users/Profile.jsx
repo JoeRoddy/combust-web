@@ -1,11 +1,11 @@
-import userStore from "../../stores/UserStore";
+import userStore from "../../stores/userStore";
 import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
 import Icon from "../reusable/Icon";
 import firebaseConfig from "../../.combust/firebase.config.json";
-import { uploadDocument } from "../../db/FileDb";
+import { uploadDocument } from "../../db/fileDb";
 import "./styles/Users.scss";
 
 @observer

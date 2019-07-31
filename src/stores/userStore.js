@@ -1,6 +1,6 @@
 import { decorate, observable, computed } from "mobx";
 
-import userDb from "../db/UserDb";
+import userDb from "../db/userDb";
 
 class UserStore {
   userId = null;

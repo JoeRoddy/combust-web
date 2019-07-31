@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
 import Form from "../../reusable/Form";
-import userStore from "../../../stores/UserStore";
+import userStore from "../../../stores/userStore";
 
 @observer
 class Login extends Component {
