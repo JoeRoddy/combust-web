@@ -194,14 +194,14 @@ export default class Form extends Component {
             );
           })}
         <button
-          className="uk-button uk-button-default uk-form-width-medium uk-margin-small"
+          className="uk-button uk-button-default uk-margin-small"
           onClick={this.submitForm}
         >
           {submitText || "submit"}
         </button>
         {(onCancel || cancelText) && (
           <button
-            className="uk-button uk-button-danger uk-form-width-medium uk-margin-small-bottom"
+            className="uk-button uk-button-danger uk-margin-small-bottom"
             onClick={onCancel}
           >
             {cancelText || "cancel"}
