@@ -24,7 +24,7 @@ class Register extends Component {
   }
 
   handleSubmit = formData => {
-    userStore.createUser(formData, (err, userData) => {
+    userStore.createUserWithEmail(formData, (err, userData) => {
       if (err) {
         this.setState({ errMessage: err.message });
       } else {

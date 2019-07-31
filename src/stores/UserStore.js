@@ -70,6 +70,7 @@ class UserStore {
    * logs out the current user
    */
   logout() {
+    _handleUserLogout();
     userDb.logout(this.user);
     this.userId = null;
   }
@@ -82,15 +83,14 @@ class UserStore {
    * @param {string} user.password
    * @param {function} callback
    */
-  createUser(user, callback) {
+  createUserWithEmail(user, callback) {
     if (!user || !user.email || !user.password) {
-      debugger;
       return callback({
         message: "You must provide an email and password"
       });
     }
 
-    userDb.createUser(user, (err, userDataByPrivacy) => {
+    userDb.createUserWithEmail(user, (err, userDataByPrivacy) => {
       if (err) return callback(err);
       _saveCurrentUserLocally(userDataByPrivacy);
       callback(err, userDataByPrivacy);
@@ -147,11 +147,9 @@ const _listenToCurrentUser = function() {
   userDb.listenToCurrentUser((err, userData) => {
     if (err) {
       return console.log(err);
-    } else if (!userData) {
+    } else if (!userData && userStore.userId) {
       //user logged out
-      if (userStore.userId) {
-        _handleUserLogout();
-      }
+      _handleUserLogout();
       userStore.userId = null;
     } else {
       //new data

@@ -3,7 +3,7 @@ import "@firebase/database";
 import "@firebase/auth";
 
 class UserDb {
-  createUser(user, callback) {
+  createUserWithEmail(user, callback) {
     if (!user || !user.email || !user.password) {
       throw new Error(
         `UserDb.create(): requires a user object with an email && password`
