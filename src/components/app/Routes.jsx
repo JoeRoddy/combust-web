@@ -1,11 +1,11 @@
 import React from "react";
 import { Switch, Route } from "react-router-dom";
 
-import Login from "./users/auth/Login";
-import Register from "./users/auth/Register";
+import Login from "../users/auth/Login";
+import Register from "../users/auth/Register";
 import Welcome from "./Welcome";
-import Profile from "./users/Profile";
-import UpdateUser from "./users/UpdateUser";
+import Profile from "../users/Profile";
+import UpdateUser from "../users/UpdateUser";
 
 const Routes = props => {
   let welcomeWrapper = () => <Welcome {...props} />;

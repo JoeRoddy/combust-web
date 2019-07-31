@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
-import welcomeStore from "../stores/WelcomeStore";
-import userStore from "../stores/UserStore";
-import { stores } from "../.combust/init";
-import SocialContacts from "./users/SocialContacts";
-import availApps from "../.combust/availApps.json";
+import welcomeStore from "../../stores/WelcomeStore";
+import userStore from "../../stores/UserStore";
+import { stores } from "../../.combust/init";
+import SocialContacts from "../users/SocialContacts";
+import availApps from "../../.combust/availApps.json";
 
 @observer
 class Welcome extends Component {

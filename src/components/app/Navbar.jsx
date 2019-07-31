@@ -2,9 +2,9 @@ import React from "react";
 import { observer } from "mobx-react";
 import { Link } from "react-router-dom";
 
-import * as iconURI from "../assets/images/logo.png";
-import UserSearch from "./users/UserSearch";
-import userStore from "../stores/UserStore";
+import * as iconURI from "../../assets/images/logo.png";
+import UserSearch from "../users/UserSearch";
+import userStore from "../../stores/UserStore";
 
 const Navbar = observer(({ history }) => (
   <div
