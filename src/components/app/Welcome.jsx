@@ -6,7 +6,6 @@ import welcomeStore from "../../stores/welcomeStore";
 import userStore from "../../stores/userStore";
 import { stores } from "../../stores/init";
 import SocialContacts from "../users/SocialContacts";
-import availApps from "../../.combust/availApps.json";
 
 @observer
 class Welcome extends Component {
@@ -37,72 +36,23 @@ class Welcome extends Component {
             completed={firebaseConfigured}
             title="Configure Firebase"
           >
-            {availApps && availApps.length > 0 ? (
-              <div>
-                <div>Select a Firebase project to link to this app</div>
-                <table className="uk-table uk-table-small uk-table-striped uk-table-hover">
-                  <caption>Your current apps</caption>
-                  <thead>
-                    <tr>
-                      <th>Project Name</th>
-                      <th>Project ID</th>
-                      <th>Permissions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {availApps.map(app => {
-                      return (
-                        <tr
-                          key={app.id}
-                          uk-toggle="target: #firebase-app"
-                          onClick={e => {
-                            this.setModalText(
-                              <span>
-                                Execute from your terminal: <br />
-                                <br />
-                                <code>combust configure {app.id}</code>
-                              </span>
-                            );
-                          }}
-                        >
-                          <td>{app.name}</td>
-                          <td>{app.id}</td>
-                          <td>{app.role}</td>
-                        </tr>
-                      );
-                    })}
-                  </tbody>
-                </table>
-                <hr className="uk-divider-small" />
-                Or:{" "}
-                <a
-                  href="https://console.firebase.google.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Create a new Firebase project
-                </a>{" "}
-                then run <code>combust configure</code>
-              </div>
-            ) : (
-              <div>
-                <ul className="uk-list uk-list-bullet">
-                  <li>
-                    <a
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&osid=1&continue=https%3A%2F%2Fconsole.firebase.google.com%2F&followup=https%3A%2F%2Fconsole.firebase.google.com%2F&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
-                    >
-                      Create a firebase project if you don't have one.
-                    </a>{" "}
-                  </li>
-                  <li>
-                    Link your project to this app from the terminal with:{" "}
-                    <code>combust configure</code>
-                  </li>
-                </ul>
-              </div>
-            )}
+            <div>
+              <ul className="uk-list uk-list-bullet">
+                <li>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href="https://accounts.google.com/ServiceLogin/signinchooser?passive=1209600&osid=1&continue=https%3A%2F%2Fconsole.firebase.google.com%2F&followup=https%3A%2F%2Fconsole.firebase.google.com%2F&flowName=GlifWebSignIn&flowEntry=ServiceLogin"
+                  >
+                    Create a firebase project if you don't have one.
+                  </a>
+                </li>
+                <li>
+                  Configure this app with your database:{" "}
+                  <code>combust configure</code>
+                </li>
+              </ul>
+            </div>
           </RenderDropdown>
 
           {firebaseConfigured && (
