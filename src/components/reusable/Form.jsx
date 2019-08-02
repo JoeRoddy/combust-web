@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import firebaseConfig from "../../.combust/firebase.config.json";
+import firebaseConfig from "../../db/firebase.config.json";
 import { uploadDocument } from "../../db/fileDb";
 
 export default class Form extends Component {
