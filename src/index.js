@@ -9,7 +9,7 @@ import firebase from "firebase/app";
 
 import { register } from "./helpers/registerServiceWorker";
 import firebaseConfig from "./.combust/firebase.config.json";
-import { initializeStores } from "./.combust/init";
+import { initializeStores } from "./stores/init";
 import App from "./components/app/App";
 
 UIkit.use(Icons);

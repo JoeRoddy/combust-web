@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 import welcomeStore from "../../stores/welcomeStore";
 import userStore from "../../stores/userStore";
-import { stores } from "../../.combust/init";
+import { stores } from "../../stores/init";
 import SocialContacts from "../users/SocialContacts";
 import availApps from "../../.combust/availApps.json";
 
