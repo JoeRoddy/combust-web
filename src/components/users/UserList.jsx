@@ -1,36 +1,36 @@
 import React from "react";
-import { observer } from "mobx-react";
 
 import Avatar from "../reusable/Avatar";
 
-const UserList = observer(({ users, onUserClicked, title }) => {
+const UserList = ({ users, onUserClicked }) => {
   return (
     <div>
       {users &&
-        Object.keys(users).map((userId, i) => {
-          const user = users[userId];
-          if (!user) {
-            return <span />;
-          }
-
-          return (
-            <div
-              key={i}
-              onClick={e => onUserClicked(user)}
-              className="User uk-flex uk-flex-between uk-flex-nowrap uk-flex-middle"
-            >
-              <span className="avatarAndName">
-                <Avatar src={user.iconUrl} height={30} />
-                <span className="userName">{user.displayName}</span>
-              </span>
-              <span
-                className={"isOnline " + (user.isOnline ? "online" : "offline")}
-              />
-            </div>
-          );
-        })}
+        Object.keys(users).map(userId => (
+          <UserListItem
+            user={users[userId]}
+            key={userId}
+            onClick={onUserClicked}
+          />
+        ))}
     </div>
   );
-});
+};
 
 export default UserList;
+
+const UserListItem = ({ onClick, user }) =>
+  user ? (
+    <div
+      onClick={() => onClick(user)}
+      className="User uk-flex uk-flex-between uk-flex-nowrap uk-flex-middle"
+    >
+      <span className="avatarAndName">
+        <Avatar src={user.iconUrl} height={30} />
+        <span className="userName">{user.displayName}</span>
+      </span>
+      <span className={"isOnline " + (user.isOnline ? "online" : "offline")} />
+    </div>
+  ) : (
+    <span />
+  );

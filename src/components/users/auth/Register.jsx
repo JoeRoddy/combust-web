@@ -1,9 +1,8 @@
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import userStore from "../../../stores/userStore";
 import Form from "../../reusable/Form";
+import { UserContext } from "../../../context";
 
 const fields = {
   //legal data types: string, text, number, boolean, image
@@ -11,49 +10,40 @@ const fields = {
   password: "string"
 };
 
-@observer
-class Register extends Component {
-  state = {
-    errMessage: ""
-  };
+export default function Register({ history }) {
+  const [errMessage, setErrMessage] = useState("");
 
-  componentDidUpdate(nextProps) {
-    if (userStore.user) {
-      this.props.history.push("/");
-    }
-  }
+  const { user, createUserWithEmail } = useContext(UserContext);
 
-  handleSubmit = formData => {
-    userStore.createUserWithEmail(formData, (err, userData) => {
+  useEffect(() => {
+    if (user) history.push("/");
+  }, [user]);
+
+  const handleSubmit = formData => {
+    createUserWithEmail(formData, (err, userData) => {
       if (err) {
-        this.setState({ errMessage: err.message });
+        setErrMessage(err.message);
       } else {
-        this.props.history.push("/");
+        history.push("/");
       }
     });
   };
 
-  render() {
-    const user = userStore.user;
-
-    return (
-      <div className="Register uk-flex uk-flex-center uk-margin">
-        <Form
-          onSubmit={this.handleSubmit}
-          submitText="Sign Up"
-          fields={fields}
-          title="New Account"
-        >
-          <br />
-          <Link to="/login">Login instead</Link>
-          <div className="uk-text-danger uk-text-break uk-margin-small-top">
-            {this.state.errMessage}
-            {user && <div>You already have an account.</div>}
-          </div>
-        </Form>
-      </div>
-    );
-  }
+  return (
+    <div className="Register uk-flex uk-flex-center uk-margin">
+      <Form
+        onSubmit={handleSubmit}
+        submitText="Sign Up"
+        fields={fields}
+        title="New Account"
+      >
+        <br />
+        <Link to="/login">Login instead</Link>
+        <div className="uk-text-danger uk-text-break uk-margin-small-top">
+          {errMessage}
+          {user && <div>You already have an account.</div>}
+        </div>
+      </Form>
+    </div>
+  );
 }
-
-export default Register;

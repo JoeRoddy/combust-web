@@ -1,38 +1,32 @@
-import userStore from "../../stores/userStore";
-import React, { Component } from "react";
-import { observer } from "mobx-react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
 import Icon from "../reusable/Icon";
 import firebaseConfig from "../../db/firebase.config.json";
 import { uploadDocument } from "../../db/fileDb";
 import "./styles/Users.scss";
+import { UserContext } from "../../context";
 
-@observer
-class Profile extends Component {
-  state = {};
+export default function Profile({ match }) {
+  const { userId: clientUserId, getUserById } = useContext(UserContext);
 
-  openConversationWithUser = userId => {
+  const openConversationWithUser = userId => {
     alert("combust install chat");
   };
 
-  followUser(userId) {
+  const followUser = userId => {
     alert("combust install followers");
-  }
+  };
 
-  sendFriendRequest(userId) {
+  const sendFriendRequest = userId => {
     alert("combust install friends");
-  }
+  };
 
-  uploadProfilePicture = (e, user) => {
+  const uploadProfilePicture = (e, user) => {
     if (!firebaseConfig.storageBucket) {
       return prompt(
-        `Ensure you've enabled storage first, then re-execute:\n combust conbigure ${
-          firebaseConfig.projectId
-        }`,
-        `https://console.firebase.google.com/project/${
-          firebaseConfig.projectId
-        }/storage/files`
+        `Ensure you've enabled storage first, then re-execute:\n combust conbigure ${firebaseConfig.projectId}`,
+        `https://console.firebase.google.com/project/${firebaseConfig.projectId}/storage/files`
       );
     }
 
@@ -43,149 +37,144 @@ class Profile extends Component {
     });
   };
 
-  render() {
-    const userId = this.props.match.params.userId;
-    const user = userStore.getUserById(userId);
-    const isMyProfile = userId === userStore.userId;
+  const userId = match.params.userId;
+  const user = getUserById(userId);
+  const isMyProfile = userId === clientUserId;
 
-    if (!user) {
-      return <span />;
-    }
-
-    return (
-      <div className="Profile">
+  return !user ? (
+    <span />
+  ) : (
+    <div className="Profile">
+      <div>
         <div>
-          <div>
-            <div
-              className="uk-background-cover uk-height-medium uk-panel"
-              style={{
-                backgroundImage:
-                  'url("https://static.pexels.com/photos/459225/pexels-photo-459225.jpeg")'
-              }}
-            >
-              <div className="uk-text-large profile-name uk-text-white">
-                {user.displayName}
-              </div>
+          <div
+            className="uk-background-cover uk-height-medium uk-panel"
+            style={{
+              backgroundImage:
+                'url("https://static.pexels.com/photos/459225/pexels-photo-459225.jpeg")'
+            }}
+          >
+            <div className="uk-text-large profile-name uk-text-white">
+              {user.displayName}
             </div>
-            <div className="uk-panel uk-flex uk-flex-center uk-flex-middle">
-              <div className="uk-position-bottom uk-card-primary uk-flex uk-flex-left uk-padding-small uk-box-shadow-large">
-                {userId && !isMyProfile ? (
-                  <ul className="uk-iconnav nav-btns">
-                    <li className="profile-nav-btn">
-                      <Icon type="comment" />
-                      <span
-                        className="uk-link"
-                        onClick={e => {
-                          this.openConversationWithUser(userId);
-                        }}
-                      >
-                        Send Message
-                      </span>
-                    </li>
-                    <li className="profile-nav-btn">
-                      <Icon type="user" />
-                      <span
-                        onClick={e => {
-                          this.sendFriendRequest(userId);
-                        }}
-                        className="uk-link"
-                      >
-                        Friend Request
-                      </span>
-                    </li>{" "}
-                    <li className="profile-nav-btn">
-                      <Icon type="star" />
-                      <span
-                        onClick={e => {
-                          this.followUser(userId);
-                        }}
-                        className="uk-link"
-                      >
-                        Follow
-                      </span>
-                    </li>
-                  </ul>
-                ) : (
-                  <ul className="uk-iconnav nav-btns">
-                    <li className="profile-nav-btn">
-                      <label>
-                        <input
-                          onChange={e => this.uploadProfilePicture(e, user)}
-                          type="file"
-                          style={{ display: "none" }}
-                        />
-
-                        <Icon type="image" />
-                        <span className="uk-link">Change Avatar</span>
-                      </label>
-                    </li>
-                    <li className="profile-nav-btn">
-                      <Icon type="file-edit" />
-                      <Link to="/updateUser">
-                        <span className="uk-link">Update Info</span>
-                      </Link>
-                    </li>
-                  </ul>
-                )}
-              </div>
-              <div className="ProfilePic uk-position-bottom-left uk-margin-small-left uk-margin-small-bottom">
-                {user.iconUrl && (
-                  <div className="uk-inline-clip uk-transition-toggle">
+          </div>
+          <div className="uk-panel uk-flex uk-flex-center uk-flex-middle">
+            <div className="uk-position-bottom uk-card-primary uk-flex uk-flex-left uk-padding-small uk-box-shadow-large">
+              {userId && !isMyProfile ? (
+                <ul className="uk-iconnav nav-btns">
+                  <li className="profile-nav-btn">
+                    <Icon type="comment" />
+                    <span
+                      className="uk-link"
+                      onClick={() => {
+                        openConversationWithUser(userId);
+                      }}
+                    >
+                      Send Message
+                    </span>
+                  </li>
+                  <li className="profile-nav-btn">
+                    <Icon type="user" />
+                    <span
+                      onClick={() => {
+                        sendFriendRequest(userId);
+                      }}
+                      className="uk-link"
+                    >
+                      Friend Request
+                    </span>
+                  </li>{" "}
+                  <li className="profile-nav-btn">
+                    <Icon type="star" />
+                    <span
+                      onClick={() => {
+                        followUser(userId);
+                      }}
+                      className="uk-link"
+                    >
+                      Follow
+                    </span>
+                  </li>
+                </ul>
+              ) : (
+                <ul className="uk-iconnav nav-btns">
+                  <li className="profile-nav-btn">
                     <label>
-                      <img src={user.iconUrl} alt="" />
-                      {isMyProfile && (
-                        <div className="uk-position-center uk-light profile-uploadIcon">
-                          <span
-                            className="uk-transition-fade"
-                            uk-icon="icon: plus; ratio: 2"
-                          />
-                        </div>
-                      )}
                       <input
-                        onChange={e => this.uploadProfilePicture(e, user)}
+                        onChange={e => uploadProfilePicture(e, user)}
                         type="file"
                         style={{ display: "none" }}
                       />
+                      <Icon type="image" />
+                      <span className="uk-link">Change Avatar</span>
                     </label>
-                  </div>
-                )}
-              </div>
+                  </li>
+                  <li className="profile-nav-btn">
+                    <Icon type="file-edit" />
+                    <Link to="/updateUser">
+                      <span className="uk-link">Update Info</span>
+                    </Link>
+                  </li>
+                </ul>
+              )}
+            </div>
+            <div className="ProfilePic uk-position-bottom-left uk-margin-small-left uk-margin-small-bottom">
+              {user.iconUrl && (
+                <div className="uk-inline-clip uk-transition-toggle">
+                  <label>
+                    <img src={user.iconUrl} alt="" />
+                    {isMyProfile && (
+                      <div className="uk-position-center uk-light profile-uploadIcon">
+                        <span
+                          className="uk-transition-fade"
+                          uk-icon="icon: plus; ratio: 2"
+                        />
+                      </div>
+                    )}
+                    <input
+                      onChange={e => uploadProfilePicture(e, user)}
+                      type="file"
+                      style={{ display: "none" }}
+                    />
+                  </label>
+                </div>
+              )}
             </div>
           </div>
+        </div>
+        <div
+          className="uk-background-muted uk-flex uk-flex-center"
+          uk-height-viewport="expand: true"
+        >
           <div
-            className="uk-background-muted uk-flex uk-flex-center"
-            uk-height-viewport="expand: true"
+            className="ProfileContent uk-grid-collapse uk-width-auto uk-child-width-1-2@s uk-flex-left"
+            uk-grid="true"
           >
-            <div
-              className="ProfileContent uk-grid-collapse uk-width-auto uk-child-width-1-2@s uk-flex-left"
-              uk-grid="true"
-            >
-              <div className="uk-padding-large uk-background-muted">
-                <ExamplePosts user={user} />
-              </div>
-              <div className="uk-padding-large uk-background-default">
-                <h1>About me</h1>
-                {[1, 2, 3, 4].map(i => {
-                  return (
-                    <p key={i}>
-                      Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                      Duis aute irure dolor in reprehenderit in voluptate velit
-                      esse cillum dolore eu fugiat nulla pariatur. Excepteur
-                      sint occaecat cupidatat non proident, sunt in culpa qui
-                      officia deserunt mollit anim id est laborum.
-                    </p>
-                  );
-                })}
-              </div>
+            <div className="uk-padding-large uk-background-muted">
+              <ExamplePosts user={user} />
+            </div>
+            <div className="uk-padding-large uk-background-default">
+              <h1>About me</h1>
+              {[1, 2, 3, 4].map(i => {
+                return (
+                  <p key={i}>
+                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
+                    do eiusmod tempor incididunt ut labore et dolore magna
+                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                    ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Duis aute irure dolor in reprehenderit in voluptate velit
+                    esse cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                    occaecat cupidatat non proident, sunt in culpa qui officia
+                    deserunt mollit anim id est laborum.
+                  </p>
+                );
+              })}
             </div>
           </div>
         </div>
       </div>
-    );
-  }
+    </div>
+  );
 }
 
 const ExamplePosts = ({ user }) => (
@@ -227,5 +216,3 @@ const ExamplePosts = ({ user }) => (
     })}
   </div>
 );
-
-export default Profile;

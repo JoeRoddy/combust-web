@@ -7,7 +7,6 @@ export const uploadDocument = (file, path, callback) => {
     .ref()
     .push().key;
 
-  debugger;
   let docRef;
   try {
     //not yet configured

@@ -7,10 +7,10 @@ import UIkit from "uikit";
 import Icons from "uikit/dist/js/uikit-icons";
 import firebase from "firebase/app";
 
-import { register } from "./helpers/registerServiceWorker";
+import { Providers } from "./context";
+import { register } from "./helpers/serviceWorkerHelper";
 import firebaseConfig from "./db/firebase.config.json";
-import { initializeStores } from "./stores/init";
-import App from "./components/app/App";
+import App from "./components/_app/App";
 
 UIkit.use(Icons);
 firebaseConfig && firebase.initializeApp(firebaseConfig);
@@ -19,11 +19,17 @@ const browserHistory = createBrowserHistory();
 const AppWrapper = withRouter(App);
 
 render(
-  <Router history={browserHistory}>
-    <AppWrapper />
-  </Router>,
+  <RootProvider providers={Providers}>
+    <Router history={browserHistory}>
+      <AppWrapper />
+    </Router>
+  </RootProvider>,
   document.getElementById("root")
 );
 
 register();
-initializeStores();
+
+// Nests an arbitrary number of providers, prevent provider spaghetti
+function RootProvider({ providers = [], children }) {
+  return providers.reduce((jsx, P) => <P>{jsx}</P>, children);
+}
