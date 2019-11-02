@@ -1,6 +1,6 @@
 import React from "react";
 import { render } from "react-dom";
-import createBrowserHistory from "history/createBrowserHistory";
+import { createBrowserHistory } from "history";
 import { Router, withRouter } from "react-router-dom";
 import "uikit/dist/css/uikit.css";
 import UIkit from "uikit";

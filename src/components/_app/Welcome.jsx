@@ -10,16 +10,20 @@ import { UserContext } from "../../context/UserContext";
 export default function Welcome({ history }) {
   const [isFirebaseConfigured, setFirebaseConfigured] = useState(false);
   const [isEmailAuthEnabled, setEmailAuthEnabled] = useState(false);
+
   const projectId = firebase.app().options.projectId;
 
   useEffect(() => {
+    let mounted = true;
     const isFirebaseConfigured = _isFirebaseConfigured();
     setFirebaseConfigured(isFirebaseConfigured);
-    if (isFirebaseConfigured) {
-      _isEmailAuthEnabled().then(isEmailAuthEnabled => {
-        setEmailAuthEnabled(isEmailAuthEnabled);
-      });
-    }
+    isFirebaseConfigured &&
+      _isEmailAuthEnabled().then(
+        isEmailAuthEnabled => mounted && setEmailAuthEnabled(isEmailAuthEnabled)
+      );
+    return () => {
+      mounted = false;
+    };
   }, []);
 
   const { user } = useContext(UserContext);
