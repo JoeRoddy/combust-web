@@ -55,14 +55,14 @@ function UserProvider({ children }) {
     userDb.login(user, callback);
   };
 
-  // /**
-  //  * logs out the current user
-  //  */
-  // const logout = () => {
-  //   _handleUserLogout();
-  //   userDb.logout(this.user);
-  //   this.userId = null;
-  // };
+  /**
+   * logs out the current user
+   */
+  const logout = () => {
+    _handleUserLogout();
+    userDb.logout(user);
+    setUserId(null);
+  };
 
   /**
    * creates a user with an email and password
@@ -131,7 +131,7 @@ function UserProvider({ children }) {
         //user logged out
         _handleUserLogout();
         setUserId(null);
-      } else {
+      } else if (userData) {
         //new data
         let shouldExecEstablished = !user && userData.publicInfo;
         _saveCurrentUserLocally(userData);
@@ -213,6 +213,7 @@ function UserProvider({ children }) {
     createUserWithEmail,
     getUserById,
     login,
+    logout,
     searchByField,
     sendPasswordResetEmail
   };

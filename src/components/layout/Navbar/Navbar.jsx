@@ -19,7 +19,7 @@ export default function Navbar({ history }) {
           {user && <div className="uk-navbar-item">{user.displayName}</div>}
           <div className="uk-navbar-item">
             {user ? (
-              <Link onClick={e => logout()} to="/login">
+              <Link onClick={logout} to="/login">
                 Logout
               </Link>
             ) : (
