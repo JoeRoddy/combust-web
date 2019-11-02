@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import * as iconURI from "../../assets/images/logo.png";
+import * as iconURI from "../../../assets/images/logo.png";
 // import UserSearch from "../users/UserSearch";
-import { UserContext } from "../../context";
+import { UserContext } from "../../../context";
+import "./Navbar.scss";
 
 export default function Navbar({ history }) {
   const { user, logout } = useContext(UserContext);

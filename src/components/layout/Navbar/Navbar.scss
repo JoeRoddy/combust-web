@@ -1,0 +1,15 @@
+.Navbar {
+  z-index: 5;
+  .uk-logo {
+    height: 40px;
+    min-height: 40px;
+  }
+  .uk-navbar-container {
+    height: 60px;
+    align-items: center;
+  }
+  .uk-navbar-right {
+    padding-right: 15px;
+    //prevents scrollbar from shifting contents
+  }
+}

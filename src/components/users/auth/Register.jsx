@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-import Form from "../../reusable/Form";
+import Form from "../../reusable/Form/Form";
 import { UserContext } from "../../../context";
 
 const fields = {

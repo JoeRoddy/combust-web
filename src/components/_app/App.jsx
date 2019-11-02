@@ -1,9 +1,8 @@
 import React from "react";
 
-import Navbar from "./Navbar";
+import Navbar from "../layout/Navbar/Navbar";
 import Routes from "./Routes";
 import "../../assets/styles/GlobalStyles.scss";
-import "../reusable/styles/Reusable.scss";
 
 export default function App(props) {
   return (

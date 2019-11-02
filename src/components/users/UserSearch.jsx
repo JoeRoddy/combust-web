@@ -1,6 +1,6 @@
 import React, { useContext, useState } from "react";
 
-import Avatar from "../reusable/Avatar";
+import Avatar from "../reusable/Avatar/Avatar";
 import "./styles/Users.scss";
 import { UserContext } from "../../context/UserContext";
 
@@ -11,7 +11,7 @@ export default function UserSearch({ history }) {
     isLoading: false,
     modalText: null
   });
-  const {searchByField} = useContext(UserContext);
+  const { searchByField } = useContext(UserContext);
 
   const setState = newData => updateState({ ...state, ...newData });
 

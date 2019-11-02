@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import Form from "../reusable/Form";
+import Form from "../reusable/Form/Form";
 import { UserContext } from "../../context";
 
 const fields = {

@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import Icon from "../reusable/Icon";
+import Icon from "../reusable/Icon/Icon";
 import firebaseConfig from "../../db/firebase.config.json";
 import { uploadDocument } from "../../db/fileDb";
 import "./styles/Users.scss";
