@@ -54,3 +54,14 @@ export const uploadDocument = (file, path, callback) => {
     }
   );
 };
+
+export const uploadImage = (image, callback) => {
+  if (!image) throw new Error("Image must exist.");
+  if (!["image/jpeg", "image/png"].includes(image.type)) {
+    return callback("Legal images include: jpegs, png");
+  }
+
+  uploadDocument(image, "images/", (err, res) =>
+    err ? callback(err) : callback(null, res.url)
+  );
+};
