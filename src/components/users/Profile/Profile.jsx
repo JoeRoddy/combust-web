@@ -1,11 +1,11 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import Icon from "../reusable/Icon/Icon";
-import firebaseConfig from "../../db/firebase.config.json";
-import { uploadDocument } from "../../db/fileDb";
-import "./styles/Users.scss";
-import { UserContext } from "../../context";
+import { UserContext } from "../../../context";
+import { uploadDocument } from "../../../db/fileDb";
+import firebaseConfig from "../../../db/firebase.config.json";
+import Icon from "../../reusable/Icon/Icon";
+import "./Profile.scss";
 
 export default function Profile({ match }) {
   const { userId: clientUserId, getUserById } = useContext(UserContext);

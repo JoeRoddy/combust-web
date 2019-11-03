@@ -1,24 +1,25 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import Avatar from "../reusable/Avatar/Avatar";
-import "./styles/Users.scss";
-import { UserContext } from "../../context/UserContext";
+import { UserContext } from "../../../context/UserContext";
+import Avatar from "../../reusable/Avatar/Avatar";
+import Input from "../../reusable/Input/Input";
+import "./UserSearch.scss";
+
+let _searchTimeout;
 
 export default function UserSearch({ history }) {
-  const [state, updateState] = useState({
-    results: [],
-    query: "",
-    isLoading: false,
-    modalText: null
-  });
-  const { searchByField } = useContext(UserContext);
+  const [results, setResults] = useState([]);
+  const [query, setQuery] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
-  const setState = newData => updateState({ ...state, ...newData });
+  const { searchByField } = useContext(UserContext);
 
   const searchForUsers = async query => {
     try {
       const results = await searchByField(query, "email");
-      setState({ results, isLoading: false });
+      console.log(results);
+      setResults(results);
+      setIsLoading(false);
     } catch (error) {
       if (error.message.includes("Failed to fetch")) {
         return prompt(
@@ -31,35 +32,36 @@ export default function UserSearch({ history }) {
 
   // searches for users after typing has halted for .3 seconds
   const handleSearchKeyUp = () => {
-    let _searchTimeout;
-
-    const { query } = state;
     clearTimeout(_searchTimeout);
     if (query !== "") {
-      setState({ isLoading: true });
+      setIsLoading(true);
       _searchTimeout = setTimeout(() => searchForUsers(query), 300);
     } else {
-      setState({ results: [], isLoading: false });
+      setResults([]);
+      setIsLoading(false);
     }
   };
 
   const openProfile = user => {
-    setState({ query: "", results: [] });
+    setQuery("");
+    setResults([]);
     history.push("/profile/" + user.id);
   };
 
-  const { isLoading, query, results } = state;
+  useEffect(() => {
+    return () => clearTimeout(_searchTimeout);
+  }, []);
 
   return (
     <div className="UserSearch">
       <form className="uk-search uk-search-default">
-        <span uk-search-icon="true" uk-icon="icon: search" />
-        <input
+        <span uk-search-icon="true" />
+        <Input
           className="uk-search-input"
           type="search"
           value={query}
           placeholder="Search for users.."
-          onChange={e => setState({ query: e.target.value })}
+          onChange={e => setQuery(e.target.value)}
           onKeyUp={handleSearchKeyUp}
           results={5}
         />
@@ -75,8 +77,11 @@ export default function UserSearch({ history }) {
       )}
       {query !== "" && (
         <span
-          className="onClickOutside"
-          onClick={() => setState({ results: [], query: "" })}
+          className="on-click-outside"
+          onClick={() => {
+            setResults([]);
+            setQuery("");
+          }}
         />
       )}
     </div>
@@ -85,8 +90,8 @@ export default function UserSearch({ history }) {
 
 const UserSearchResults = ({ results, openProfile }) => (
   <div className="uk-card uk-card-default uk-card-body searchResults">
-    {results.map((user, i) => {
-      return (
+    {results.length ? (
+      results.map((user, i) => (
         <div key={i}>
           <div
             onClick={() => openProfile(user)}
@@ -96,7 +101,13 @@ const UserSearchResults = ({ results, openProfile }) => (
             {user.displayName}
           </div>
         </div>
-      );
-    })}
+      ))
+    ) : (
+      <div>
+        <div className="userSearch-result uk-flex uk-flex-middle uk-text-truncate">
+          No results
+        </div>
+      </div>
+    )}
   </div>
 );

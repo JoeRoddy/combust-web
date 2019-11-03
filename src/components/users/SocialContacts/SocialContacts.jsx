@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 
-import { UserContext } from "../../context";
-import "./styles/Users.scss";
+import { UserContext } from "../../../context";
+import "./SocialContacts.scss";
 
 const componentsByMode = {};
 
@@ -14,7 +14,7 @@ export default function SocialContacts({ history }) {
   const isDropdownShown = socialModes && socialModes.length > 1;
 
   return (
-    <div className="SocialContacts uk-position-right">
+    <div className="SocialContacts uk-position-right non-highlightable">
       <div className="uk-inline">
         <h4>
           {mode}

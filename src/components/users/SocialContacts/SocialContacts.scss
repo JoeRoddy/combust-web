@@ -1,0 +1,16 @@
+.SocialContacts {
+  border-left: 1px solid lightgray;
+  z-index: 4;
+  padding-top: 100px;
+  background-color: #fdfdfd;
+  width: 240px;
+  h4 {
+    //title
+    cursor: pointer;
+    margin-left: 15px;
+  }
+  .uk-heading-line {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}

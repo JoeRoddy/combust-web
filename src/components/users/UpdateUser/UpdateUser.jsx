@@ -1,27 +1,28 @@
 import React, { useContext } from "react";
 
-import Form from "../reusable/Form/Form";
-import { UserContext } from "../../context";
+import Form from "../../reusable/Form/Form";
+import { UserContext } from "../../../context";
+import "./UpdateUser.scss";
 
-const fields = {
+const formFields = {
   iconUrl: "image"
 };
 
 const UpdateUser = ({ history }) => {
   const { user } = useContext(UserContext);
 
-  const routeToProfile = () => history.push("/profile/" + user.id);
+  const routeToProfile = () => history.push(`/profile/${user.id}`);
 
   return user ? (
-    <div className="Updateuser uk-flex uk-flex-center uk-padding">
+    <div className="UpdateUser uk-flex uk-flex-center uk-padding">
       <Form
-        fields={fields}
+        fields={formFields}
         defaultValues={user}
         title="Update User"
         submitText="Save Info"
         onCancel={routeToProfile}
         onSubmit={formData => {
-          fields &&
+          formFields &&
             Object.keys(formData).forEach(field => {
               const val = formData[field];
               field = field === "profilePic" ? "iconUrl" : field;

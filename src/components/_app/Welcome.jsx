@@ -76,7 +76,7 @@ export default function Welcome({ history }) {
           <RenderDropdown completed={user} title="Create a User">
             <ToDoItem completed={user}>
               <Link
-                to="/register"
+                to="/signup"
                 onClick={e => {
                   if (user) {
                     e.preventDefault();

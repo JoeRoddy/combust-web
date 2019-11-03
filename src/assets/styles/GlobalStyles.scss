@@ -6,12 +6,19 @@
   background: #f0506e !important;
 }
 
-.onClickOutside {
+.on-click-outside {
   position: fixed;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
+}
+
+.non-highlightable {
+  -webkit-user-select: none; /* Safari */
+  -moz-user-select: none; /* Firefox */
+  -ms-user-select: none; /* IE10+/Edge */
+  user-select: none; /* Standard */
 }
 
 .uk-text-white {

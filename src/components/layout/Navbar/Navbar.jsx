@@ -1,9 +1,9 @@
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 
-import * as iconURI from "../../../assets/images/logo.png";
-// import UserSearch from "../users/UserSearch";
 import { UserContext } from "../../../context";
+import UserSearch from "../../users/UserSearch/UserSearch";
+import * as iconURI from "../../../assets/images/logo.png";
 import "./Navbar.scss";
 
 export default function Navbar({ history }) {
@@ -14,7 +14,7 @@ export default function Navbar({ history }) {
       uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; bottom: #transparent-sticky-navbar"
     >
       <nav className="uk-navbar-container" uk-navbar="true">
-        {renderNavLeft()}
+        <NavLeft />
         <div className="uk-navbar-right">
           {user && <div className="uk-navbar-item">{user.displayName}</div>}
           <div className="uk-navbar-item">
@@ -27,7 +27,7 @@ export default function Navbar({ history }) {
             )}
           </div>
           <div className="uk-navbar-item">
-            {/* <UserSearch history={history} /> */}
+            <UserSearch history={history} />
           </div>
         </div>
       </nav>
@@ -35,8 +35,8 @@ export default function Navbar({ history }) {
   );
 }
 
-const renderNavLeft = () => {
-  //This is a combust hook. Do not alter additionalLinks
+const NavLeft = () => {
+  //This is a combust hook. Do not alter or rename additionalLinks
   const additionalLinks = [];
   const { userId } = useContext(UserContext);
 
@@ -44,6 +44,7 @@ const renderNavLeft = () => {
     <div className="uk-navbar-left">
       <Link to="/">
         <img className="uk-navbar-item uk-logo" src={iconURI} alt="" />
+        <span className="display-none accessibility">Go back to home</span>
       </Link>
       <div className="uk-navbar-item">
         <Link to="/">Home</Link>
@@ -53,8 +54,8 @@ const renderNavLeft = () => {
           <Link to={"/profile/" + userId}>My Profile</Link>
         </div>
       )}
-      {additionalLinks &&
-        userId &&
+      {userId &&
+        additionalLinks &&
         additionalLinks.map((linkJsx, i) => {
           return (
             <div key={i} className="uk-navbar-item">

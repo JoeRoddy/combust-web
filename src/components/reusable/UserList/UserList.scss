@@ -1,0 +1,27 @@
+.UserList {
+  .UserListItem {
+    padding: 5px 10px;
+    cursor: pointer;
+    &:hover {
+      background-color: #ececec;
+    }
+    .Avatar {
+      margin-right: 5px;
+    }
+    .avatarAndName {
+      max-width: 92%;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+    .isOnline {
+      height: 8px;
+      width: 8px;
+      border-radius: 50%;
+      background-color: gray;
+    }
+    .online {
+      background-color: #67f391;
+    }
+  }
+}
