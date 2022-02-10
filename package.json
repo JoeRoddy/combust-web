@@ -43,7 +43,7 @@
     "mobx": "^4.0.0",
     "mobx-react": "^5.4.3",
     "moment": "^2.20.1",
-    "node-sass": "^4.11.0",
+    "node-sass": "^7.0.0",
     "optimize-css-assets-webpack-plugin": "5.0.1",
     "pnp-webpack-plugin": "1.1.0",
     "postcss-flexbugs-fixes": "4.1.0",
